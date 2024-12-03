@@ -1,8 +1,12 @@
 package com.example.TodoList.controller;
 
+import com.example.TodoList.apiResponse.WeatherResponse;
 import com.example.TodoList.service.TodoService;
 import com.example.TodoList.model.Todo;
+import com.example.TodoList.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +18,14 @@ public class TodoController {
     @Autowired
     private TodoService todoService;
 
-    // New endpoint to test the database connection
-    @GetMapping("/test_db")
-    public String testDatabaseConnection() {
-        return todoService.checkDatabaseConnection();
-    }
+    @Autowired
+    private WeatherService weatherService;
 
-    @GetMapping
-    public String getAllTodos(Model model) {
-        model.addAttribute("todos", todoService.getAll());
-        return "todos/list";
-    }
+//    @GetMapping
+//    public String getAllTodos(Model model) {
+//        model.addAttribute("todos", todoService.getAll());
+//        return "todos/list";
+//    }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
@@ -56,6 +57,15 @@ public class TodoController {
     public String deleteTodo(@PathVariable("id") int id) {
         todoService.delete(id);
         return "redirect:/todos";
+    }
+    @GetMapping
+    public ResponseEntity<?> weather() {
+        WeatherResponse response=weatherService.getWeather("Mumbai");
+        String greetings="";
+        if(response!=null){
+            greetings="Weather feels like "+response.getCurrent().getFeelslike();
+        }
+        return new ResponseEntity<>("Hi "+ greetings,HttpStatus.OK);
     }
 }
 
