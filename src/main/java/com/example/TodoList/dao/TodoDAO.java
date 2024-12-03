@@ -13,19 +13,6 @@ public class TodoDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // New method to check if the database is connected
-    public boolean checkConnection() {
-        try {
-            // Execute a simple query to check the database connection
-            String sql = "SELECT 1"; // This is a simple query to test the DB connection
-            jdbcTemplate.queryForObject(sql, Integer.class); // Executes the query
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace(); // Log or print the exception
-            return false;
-        }
-    }
-
     public int create(Todo todo) {
         String sql = "INSERT INTO todo (title, description, status) VALUES (?, ?, ?)";
         return jdbcTemplate.update(sql, todo.getTitle(), todo.getDescription(), todo.getStatus());

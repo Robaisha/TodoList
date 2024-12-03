@@ -13,12 +13,6 @@ public class TodoService {
     @Autowired
     private TodoDAO todoDAO;
 
-    // Service method to check DB connection
-    public String checkDatabaseConnection() {
-        boolean isConnected = todoDAO.checkConnection();
-        return isConnected ? "Database connected successfully!" : "Failed to connect to the database.";
-    }
-
     public int create(Todo todo) {
         return todoDAO.create(todo);
     }
@@ -38,5 +32,7 @@ public class TodoService {
     public int delete(int id) {
         return todoDAO.delete(id);
     }
+
+    public String getName(){return "Vipul";}
 }
 
